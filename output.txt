@@ -1,0 +1,11 @@
+Maximum p-value in  1000 simulations
+
+Testing H0:beta=0, x fixed
+vcov=iid:  0 
+vcov=hetero:  0 
+vcov=twoway:  3.722338e-138 
+
+Testing H0:beta=0, x random
+vcov=iid:  0 
+vcov=hetero:  0 
+vcov=twoway:  8.815392e-57 
