@@ -12,8 +12,8 @@ dt$x = dt$c + as.vector(replicate(ngroups,as.vector(arima.sim(model=list(order=c
 
 reg = feols(c~x|group+time,data=dt)
 bias = unname(reg$coefficients) # bias of the estimator of beta conditionally on x
-df_res = degrees_freedom(reg,type="resid",vcov="iid")
-df_res_tw = degrees_freedom(reg,type="resid",vcov="twoway")
+df_t = degrees_freedom(reg,type="t",vcov="iid")
+df_t_tw = degrees_freedom(reg,type="t",vcov="twoway")
 
 onesimul_xfixed = function(){
 # one simulation with x fixed
@@ -47,24 +47,24 @@ simul_xvar = replicate(nsimul,onesimul_xvar())
 bias_var_est = mean(simul_xvar["bias",]) # approximate unconditional bias of the estimator of beta
 
 # compute p-values for simulations with x fixed, testing H0:beta=0, with various covariance matrices
-pval_xfixed_iid = 2*pt(abs(simul_xfixed["est",])/simul_xfixed["se_iid",],df=df_res,lower.tail=FALSE)
-pval_xfixed_hc = 2*pt(abs(simul_xfixed["est",])/simul_xfixed["se_hc",],df=df_res,lower.tail=FALSE)
-pval_xfixed_tw = 2*pt(abs(simul_xfixed["est",])/simul_xfixed["se_tw",],df=df_res_tw,lower.tail=FALSE)
+pval_xfixed_iid = 2*pt(abs(simul_xfixed["est",])/simul_xfixed["se_iid",],df=df_t,lower.tail=FALSE)
+pval_xfixed_hc = 2*pt(abs(simul_xfixed["est",])/simul_xfixed["se_hc",],df=df_t,lower.tail=FALSE)
+pval_xfixed_tw = 2*pt(abs(simul_xfixed["est",])/simul_xfixed["se_tw",],df=df_t_tw,lower.tail=FALSE)
 
 # compute p-values for simulations with x fixed, testing H0:beta=bias, with various covariance matrices
-pval_xfixed_bias_iid = 2*pt(abs(simul_xfixed["est",]-bias)/simul_xfixed["se_iid",],df=df_res,lower.tail=FALSE)
-pval_xfixed_bias_hc = 2*pt(abs(simul_xfixed["est",]-bias)/simul_xfixed["se_hc",],df=df_res,lower.tail=FALSE)
-pval_xfixed_bias_tw = 2*pt(abs(simul_xfixed["est",]-bias)/simul_xfixed["se_tw",],df=df_res_tw,lower.tail=FALSE)
+pval_xfixed_bias_iid = 2*pt(abs(simul_xfixed["est",]-bias)/simul_xfixed["se_iid",],df=df_t,lower.tail=FALSE)
+pval_xfixed_bias_hc = 2*pt(abs(simul_xfixed["est",]-bias)/simul_xfixed["se_hc",],df=df_t,lower.tail=FALSE)
+pval_xfixed_bias_tw = 2*pt(abs(simul_xfixed["est",]-bias)/simul_xfixed["se_tw",],df=df_t_tw,lower.tail=FALSE)
 
 # compute p-values for simulations with x random, testing H0:beta=0, with various covariance matrices
-pval_xvar_iid = 2*pt(abs(simul_xvar["est",])/simul_xvar["se_iid",],df=df_res,lower.tail=FALSE)
-pval_xvar_hc = 2*pt(abs(simul_xvar["est",])/simul_xvar["se_hc",],df=df_res,lower.tail=FALSE)
-pval_xvar_tw = 2*pt(abs(simul_xvar["est",])/simul_xvar["se_tw",],df=df_res_tw,lower.tail=FALSE)
+pval_xvar_iid = 2*pt(abs(simul_xvar["est",])/simul_xvar["se_iid",],df=df_t,lower.tail=FALSE)
+pval_xvar_hc = 2*pt(abs(simul_xvar["est",])/simul_xvar["se_hc",],df=df_t,lower.tail=FALSE)
+pval_xvar_tw = 2*pt(abs(simul_xvar["est",])/simul_xvar["se_tw",],df=df_t_tw,lower.tail=FALSE)
 
 # compute p-values for simulations with x random, testing H0:beta=bias, with various covariance matrices
-pval_xvar_bias_iid = 2*pt(abs(simul_xvar["est",]-bias_var_est)/simul_xvar["se_iid",],df=df_res,lower.tail=FALSE)
-pval_xvar_bias_hc = 2*pt(abs(simul_xvar["est",]-bias_var_est)/simul_xvar["se_hc",],df=df_res,lower.tail=FALSE)
-pval_xvar_bias_tw = 2*pt(abs(simul_xvar["est",]-bias_var_est)/simul_xvar["se_tw",],df=df_res_tw,lower.tail=FALSE)
+pval_xvar_bias_iid = 2*pt(abs(simul_xvar["est",]-bias_var_est)/simul_xvar["se_iid",],df=df_t,lower.tail=FALSE)
+pval_xvar_bias_hc = 2*pt(abs(simul_xvar["est",]-bias_var_est)/simul_xvar["se_hc",],df=df_t,lower.tail=FALSE)
+pval_xvar_bias_tw = 2*pt(abs(simul_xvar["est",]-bias_var_est)/simul_xvar["se_tw",],df=df_t_tw,lower.tail=FALSE)
 
 # cumulative distribution functions for p-values
 F_xfixed_bias_iid = ecdf(pval_xfixed_bias_iid)
