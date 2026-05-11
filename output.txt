@@ -3,9 +3,9 @@ Maximum p-value in  1000 simulations
 Testing H0:beta=0, x fixed
 vcov=iid:  0 
 vcov=hetero:  0 
-vcov=twoway:  3.722338e-138 
+vcov=twoway:  2.079094e-19 
 
 Testing H0:beta=0, x random
 vcov=iid:  0 
 vcov=hetero:  0 
-vcov=twoway:  8.815392e-57 
+vcov=twoway:  5.090584e-15 
